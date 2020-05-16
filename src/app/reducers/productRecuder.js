@@ -75,6 +75,12 @@ const productsSlice = createSlice({
         loading: payload,
       };
     },
+    addingProduct: (state, { payload }) => {
+      return {
+        ...state,
+        isadding: payload,
+      };
+    },
     showEditProductModal: (state, { payload }) => ({
       ...state,
       showEditProductModal: payload,
@@ -90,6 +96,7 @@ export const {
   selectedProduct: selectedProductAction,
   productPagination: productPaginationAction,
   isEditProduct: isEditProductAction,
+  addingProduct: isAddProductAction,
   productsLoading: productsLoadingAction,
   showEditProductModal: showEditProductModalAction,
 } = productsSlice.actions;

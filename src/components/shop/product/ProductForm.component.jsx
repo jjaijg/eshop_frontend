@@ -10,7 +10,7 @@ import { inputNumberValidator } from "../validator/productValidator";
 
 import { getAllMetrics } from "../../../app/dispatchers/metricDispatcher";
 // helper
-import tamilUnicodeUtf8Replace from "../helper.js/font";
+import tamilUnicodeUtf8Replace from "../helper/font";
 
 const ProductForm = ({ addNewProduct }) => {
   // Variables

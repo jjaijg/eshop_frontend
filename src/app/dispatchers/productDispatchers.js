@@ -8,6 +8,7 @@ import {
   deleteProductAction,
   showEditProductModalAction,
   isEditProductAction,
+  isAddProductAction,
   selectedProductAction,
   createProductAction,
 } from "../reducers/productRecuder";
@@ -52,18 +53,18 @@ export const getAllProducts = (params = {}) => (dispatch) => {
 
 // create new product
 export const addProduct = (product) => async (dispatch) => {
-  dispatch(productsLoadingAction(true));
+  dispatch(isAddProductAction(true));
   await axios
     .post(`products`, product)
     .then((res) => {
       dispatch(createProductAction(res.data));
-      dispatch(productsLoadingAction(false));
+      dispatch(isAddProductAction(false));
 
       message.success(`${product.tamilName} added to list successfully!`);
     })
     .catch((err) => {
       // console.log(err.toJSON());
-      dispatch(productsLoadingAction(false));
+      dispatch(isAddProductAction(false));
       notification.error({
         message: "Error",
         description: `Error in adding product, Error: ${err.message}`,

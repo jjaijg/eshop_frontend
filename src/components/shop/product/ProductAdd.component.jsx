@@ -13,7 +13,7 @@ import { addProduct } from "../../../app/dispatchers/productDispatchers";
 const ProductAdd = () => {
   // Variables
   // global state
-  const { loading } = useSelector((state) => state.product);
+  const { isadding } = useSelector((state) => state.product);
   // Redux
   const dispatch = useDispatch();
 
@@ -29,7 +29,7 @@ const ProductAdd = () => {
     <>
       <Row type="flex" align="middle">
         <Col span={16}>
-          {loading ? (
+          {isadding ? (
             <Spin tip="Adding new product!!!">{addproductForm}</Spin>
           ) : (
             addproductForm
