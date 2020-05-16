@@ -5,6 +5,7 @@ const productsSlice = createSlice({
   name: "productsSlice",
   initialState: {
     products: [],
+    recentProducts: [],
     selectedProduct: {},
     pagination: { current: 1, pageSize: 10, total: 100 },
     isEditProduct: false,
@@ -13,8 +14,16 @@ const productsSlice = createSlice({
   },
   reducers: {
     create: (state, { payload }) => {
-      const { products } = state;
-      products.push(payload);
+      const { products, recentProducts, pagination: { pageSize } } = state;
+      // if products list >= pageSize, add to recent alone,
+      if (products.length >= pageSize) {
+        recentProducts.push(payload)
+      }
+      // Else add to products list end and recent
+      else {
+        products.push(payload);
+        recentProducts.push(payload)
+      }
     },
     edit: (state, { payload }) => {
       const { products } = state;
@@ -24,7 +33,6 @@ const productsSlice = createSlice({
       }
     },
     remove: (state, { payload }) => {
-      const { products } = state;
       return {
         ...state,
         products: [...state.products.filter(({ id }) => id !== payload)],
@@ -36,6 +44,9 @@ const productsSlice = createSlice({
         ...state,
         products: [...payload],
       };
+    },
+    getRecentProducts: (state, { payload }) => {
+      return { ...state, recentProducts: [...payload] }
     },
     selectedProduct: (state, { payload }) => {
       return {
