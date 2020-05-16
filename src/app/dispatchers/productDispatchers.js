@@ -25,15 +25,18 @@ export const getAllProducts = (params = {}) => (dispatch) => {
       },
     })
     .then((res) => {
+      // get paginations and products
+      const { products } = res.data._embedded
+      const { totalElements } = res.data.page
       // set pagination
       dispatch(
         productPaginationAction({
-          total: 100,
+          total: totalElements,
           ...params.pagination,
         })
       );
       // set products
-      dispatch(getProductsAction(res.data._embedded.products));
+      dispatch(getProductsAction(products));
       // set loading
       dispatch(productsLoadingAction(false));
     })
@@ -42,10 +45,8 @@ export const getAllProducts = (params = {}) => (dispatch) => {
 
 // create new product
 export const addProduct = (product) => (dispatch) => {
-  dispatch(productsLoadingAction(true));
   axios.post(`products`, product).then((res) => {
     dispatch(createProductAction(res.data));
-    dispatch(productsLoadingAction(false));
   });
 };
 
