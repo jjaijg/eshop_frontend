@@ -1,12 +1,11 @@
 // Product Table config
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { SearchOutlined } from "@ant-design/icons";
 
 import Highlighter from "react-highlight-words";
 // import PropTypes from "prop-types";
 
-import { Table, Input, Button, Row, Col } from "antd";
+import { Input, Button } from "antd";
 const getColumnSearchProps = (
   dataIndex,
   handleSearch,
