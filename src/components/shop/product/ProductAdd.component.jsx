@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../../app/dispatchers/productDispatchers";
 
 // Add product Component
-const ProductAdd1 = () => {
+const ProductAdd = () => {
   // Variables
   // global state
   const { loading } = useSelector((state) => state.product);

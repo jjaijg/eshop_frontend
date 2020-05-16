@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 
 // import PropTypes from "prop-types";
-import { Layout, Menu, Row, Col } from "antd";
+import { Layout, Menu } from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -17,7 +16,6 @@ const { Header, Sider, Content } = Layout;
 
 const Dashboard = (props) => {
   const [collapsed, setCollapsed] = useState(true);
-  const dispatch = useDispatch();
 
   const toggle = () => {
     setCollapsed(!collapsed);

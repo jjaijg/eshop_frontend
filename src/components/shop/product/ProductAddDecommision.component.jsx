@@ -12,7 +12,7 @@ import { isEditProductAction } from "../../../app/reducers/productRecuder";
 import { addProduct } from "../../../app/dispatchers/productDispatchers";
 
 // Add product Component
-const ProductAdd = () => {
+const ProductAddDecommission = () => {
   // Variables
   // inline state
   const [visible, setvisible] = useState(false);
@@ -60,4 +60,4 @@ const ProductAdd = () => {
   );
 };
 
-export default ProductAdd;
+export default ProductAddDecommission;
