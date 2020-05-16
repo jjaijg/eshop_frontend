@@ -1,4 +1,5 @@
 import axios from "../axios";
+import { message, notification } from "antd";
 
 import {
   productsLoadingAction,
@@ -26,8 +27,8 @@ export const getAllProducts = (params = {}) => (dispatch) => {
     })
     .then((res) => {
       // get paginations and products
-      const { products } = res.data._embedded
-      const { totalElements } = res.data.page
+      const { products } = res.data._embedded;
+      const { totalElements } = res.data.page;
       // set pagination
       dispatch(
         productPaginationAction({
@@ -40,14 +41,34 @@ export const getAllProducts = (params = {}) => (dispatch) => {
       // set loading
       dispatch(productsLoadingAction(false));
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      dispatch(productsLoadingAction(false));
+      notification.error({
+        message: "Error",
+        description: `Error in getting products, Error: ${err.message}`,
+      });
+    });
 };
 
 // create new product
-export const addProduct = (product) => (dispatch) => {
-  axios.post(`products`, product).then((res) => {
-    dispatch(createProductAction(res.data));
-  });
+export const addProduct = (product) => async (dispatch) => {
+  dispatch(productsLoadingAction(true));
+  await axios
+    .post(`products`, product)
+    .then((res) => {
+      dispatch(createProductAction(res.data));
+      dispatch(productsLoadingAction(false));
+
+      message.success(`${product.tamilName} added to list successfully!`);
+    })
+    .catch((err) => {
+      // console.log(err.toJSON());
+      dispatch(productsLoadingAction(false));
+      notification.error({
+        message: "Error",
+        description: `Error in adding product, Error: ${err.message}`,
+      });
+    });
 };
 
 // Edit a product
