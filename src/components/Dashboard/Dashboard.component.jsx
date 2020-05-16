@@ -50,7 +50,15 @@ const Dashboard = (props) => {
           </Menu>
         </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
+          <Header
+            className="site-layout-background"
+            style={{
+              position: "fixed",
+              zIndex: 1,
+              width: "100%",
+              padding: "0px",
+            }}
+          >
             {React.createElement(
               collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
               {
@@ -63,7 +71,7 @@ const Dashboard = (props) => {
           <Content
             className="site-layout-background"
             style={{
-              margin: "24px 16px",
+              margin: "60px 16px",
               padding: 24,
               minHeight: 280,
             }}
