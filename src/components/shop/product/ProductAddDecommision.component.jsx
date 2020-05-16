@@ -1,22 +1,22 @@
 // Depenencies
-// React 
+// React
 import React, { useState } from "react";
-// antd 
+// antd
 import { Drawer, Button, Spin } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 // custom component dependency
 import ProductForm from "./ProductForm.component";
-// Redux 
-import { useDispatch } from 'react-redux'
+// Redux
+import { useDispatch } from "react-redux";
 import { isEditProductAction } from "../../../app/reducers/productRecuder";
 import { addProduct } from "../../../app/dispatchers/productDispatchers";
 
 // Add product Component
 const ProductAdd = () => {
   // Variables
-  // inline state 
+  // inline state
   const [visible, setvisible] = useState(false);
-  const [isadding, setisadding] = useState(false)
+  const [isadding, setisadding] = useState(false);
   // Redux
   const dispatch = useDispatch();
 
@@ -30,13 +30,12 @@ const ProductAdd = () => {
     setvisible(false);
   };
 
-  const addNewProduct = newProduct => {
-    setisadding(true)
-    dispatch(addProduct(newProduct))
-    setisadding(false)
-
-  }
-  const addproductForm = <ProductForm addNewProduct={addNewProduct} />
+  const addNewProduct = (newProduct) => {
+    setisadding(true);
+    dispatch(addProduct(newProduct));
+    setisadding(false);
+  };
+  const addproductForm = <ProductForm addNewProduct={addNewProduct} />;
   // Helpers -> end
 
   return (
@@ -51,7 +50,11 @@ const ProductAdd = () => {
         visible={visible}
         bodyStyle={{ paddingBottom: 80 }}
       >
-        {isadding ? <Spin tip="Adding new product!!!" >{addproductForm}</Spin> : addproductForm}
+        {isadding ? (
+          <Spin tip="Adding new product!!!">{addproductForm}</Spin>
+        ) : (
+          addproductForm
+        )}
       </Drawer>
     </div>
   );
