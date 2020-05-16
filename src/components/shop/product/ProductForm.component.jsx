@@ -3,12 +3,7 @@
 import React, { useEffect } from "react";
 // import PropTypes from "prop-types";
 // Antd
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-} from "antd";
+import { Form, Input, Button, Select } from "antd";
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import { inputNumberValidator } from "../validator/productValidator";
@@ -35,7 +30,7 @@ const ProductForm = ({ addNewProduct }) => {
   useEffect(() => {
     dispatch(getAllMetrics());
   }, []);
-  // intializer to set or reset form fields 
+  // intializer to set or reset form fields
   useEffect(() => {
     form.setFieldsValue({
       ...selectedProduct,
@@ -47,22 +42,30 @@ const ProductForm = ({ addNewProduct }) => {
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
+    size: "large",
   };
 
-  const processTamilInput = e => {
-    const englishValue = e.target.value
-    const tamilWord = tamilUnicodeUtf8Replace(englishValue)
-    form.setFieldsValue({
-      tamilName: tamilWord
-    })
-  }
+  const tailLayout = {
+    wrapperCol: {
+      offset: 8,
+      span: 16,
+    },
+  };
 
-  const processForm = (fields) => {
+  const processTamilInput = (e) => {
+    const englishValue = e.target.value;
+    const tamilWord = tamilUnicodeUtf8Replace(englishValue);
+    form.setFieldsValue({
+      tamilName: tamilWord,
+    });
+  };
+
+  const processForm = (values) => {
     form
       .validateFields()
       .then((values) => {
-        const { tamilInput, ...newProduct } = values
-        addNewProduct(newProduct)
+        const { tamilInput, ...newProduct } = values;
+        addNewProduct(newProduct);
       })
       .catch((reason) => {
         console.log(reason);
@@ -74,8 +77,8 @@ const ProductForm = ({ addNewProduct }) => {
       {...layout}
       form={form}
       onFinish={processForm}
-      onFinishFailed={({ errorFields }) => {
-        console.log(errorFields);
+      onFinishFailed={(errInfo) => {
+        console.log(errInfo);
       }}
     >
       <Form.Item
@@ -87,11 +90,17 @@ const ProductForm = ({ addNewProduct }) => {
             max: 50,
             message: "length should be between 2 to 50",
           },
-          { whitespace: true, message: "Name should not be spaces" },
-          { required: true, message: "Please input English Name!" },
+          {
+            whitespace: true,
+            message: "Name should not be spaces",
+          },
+          {
+            required: true,
+            message: "Please input English Name!",
+          },
         ]}
       >
-        <Input placeholder="Product English Name" />
+        <Input autoFocus placeholder="Product English Name" />
       </Form.Item>
       <Form.Item
         label="Tamil Name"
@@ -101,8 +110,14 @@ const ProductForm = ({ addNewProduct }) => {
             min: 5,
             message: "length should be between 5 to 50",
           },
-          { whitespace: true, message: "Name should not be spaces" },
-          { required: true, message: "Please input Tamil Name!" },
+          {
+            whitespace: true,
+            message: "Name should not be spaces",
+          },
+          {
+            required: true,
+            message: "Please input Tamil Name!",
+          },
         ]}
         onChange={processTamilInput}
       >
@@ -116,8 +131,14 @@ const ProductForm = ({ addNewProduct }) => {
             min: 5,
             message: "length should be between 5 to 50",
           },
-          { whitespace: true, message: "Name should not be spaces" },
-          { required: true, message: "Please input Tamil Name!" },
+          {
+            whitespace: true,
+            message: "Name should not be spaces",
+          },
+          {
+            required: true,
+            message: "Please input Tamil Name!",
+          },
         ]}
       >
         <Input placeholder="Product Tamil Name" disabled />
@@ -125,13 +146,23 @@ const ProductForm = ({ addNewProduct }) => {
       <Form.Item
         name="metric"
         label="Select Unit"
-        rules={[{ required: true, message: "Please select unit type" }]}
+        rules={[
+          {
+            required: true,
+            message: "Please select unit type",
+          },
+        ]}
       >
         <Select placeholder="Select an Unit" allowClear>
           {metrics
             ? metrics.map((metric) => (
-              <Option key={metric._links.self.href} value={metric._links.self.href}>{metric.unitName}</Option>
-            ))
+                <Option
+                  key={metric._links.self.href}
+                  value={metric._links.self.href}
+                >
+                  {metric.unitName}
+                </Option>
+              ))
             : null}
         </Select>
       </Form.Item>
@@ -144,7 +175,10 @@ const ProductForm = ({ addNewProduct }) => {
             max: 1000000.0,
             validator: inputNumberValidator,
           },
-          { required: true, message: "Please input price!" },
+          {
+            required: true,
+            message: "Please input price!",
+          },
         ]}
       >
         <Input placeholder="Procudt Price" prefix="₹" suffix="INR" />
@@ -158,7 +192,10 @@ const ProductForm = ({ addNewProduct }) => {
             max: 1000000.0,
             validator: inputNumberValidator,
           },
-          { required: true, message: "Please input Retial price!" },
+          {
+            required: true,
+            message: "Please input Retial price!",
+          },
         ]}
       >
         <Input placeholder="Procudt Retail Price" prefix="₹" suffix="INR" />
@@ -172,21 +209,25 @@ const ProductForm = ({ addNewProduct }) => {
             max: 1000000.0,
             validator: inputNumberValidator,
           },
-          { required: true, message: "Please input Wholsesale price!" },
+          {
+            required: true,
+            message: "Please input Wholsesale price!",
+          },
         ]}
       >
         <Input placeholder="Procudt Wholesale Price" prefix="₹" suffix="INR" />
       </Form.Item>
-      <Form.Item>
+      <Form.Item {...tailLayout}>
         <Button
           htmlType="reset"
           type="danger"
           onClick={() => form.resetFields()}
+          style={{
+            marginRight: "15px",
+          }}
         >
           Reset Form
         </Button>
-      </Form.Item>
-      <Form.Item>
         <Button htmlType="submit" type="primary">
           Add Product
         </Button>
@@ -195,8 +236,7 @@ const ProductForm = ({ addNewProduct }) => {
   );
   // Helper -> Ends
 
-  return formComponent
-
+  return formComponent;
 };
 
 ProductForm.propTypes = {};
