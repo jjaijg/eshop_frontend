@@ -1,1 +1,1 @@
-## Eshop Billing - Frontend with React and Recud toolkit.
+## Eshop Billing - Frontend with React and Redux toolkit.
