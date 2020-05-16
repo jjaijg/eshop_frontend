@@ -1,39 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// Dependencies
+// React
+import React, { useEffect } from "react";
 // import PropTypes from "prop-types";
+// Antd
 import {
   Form,
   Input,
-  InputNumber,
   Button,
-  Row,
-  Col,
-  Spin,
-  Popconfirm,
   Select,
 } from "antd";
-import Icon from "@ant-design/icons";
-
-import { QuestionCircleOutlined } from "@ant-design/icons";
-
+// Redux
+import { useDispatch, useSelector } from "react-redux";
 import { inputNumberValidator } from "../validator/productValidator";
 
-import { addProduct } from "../../../app/dispatchers/productDispatchers";
 import { getAllMetrics } from "../../../app/dispatchers/metricDispatcher";
-const { Option } = Select;
+// helper
+import tamilUnicodeUtf8Replace from "../helper.js/font";
 
-const ProductForm = ({ product }) => {
+const ProductForm = ({ addNewProduct }) => {
+  // Variables
+  // Form Ref
   const [form] = Form.useForm();
-  const dispatch = useDispatch();
-  const { selectedProduct, loading, isEditProduct } = useSelector(
+  // global states
+  const { selectedProduct, isEditProduct } = useSelector(
     (state) => state.product
   );
   const { metrics } = useSelector((state) => state.metric);
+  // Redux
+  const dispatch = useDispatch();
+  // helper
+  const { Option } = Select;
 
+  // Initializer to get metric
   useEffect(() => {
     dispatch(getAllMetrics());
   }, []);
-
+  // intializer to set or reset form fields 
   useEffect(() => {
     form.setFieldsValue({
       ...selectedProduct,
@@ -41,17 +43,26 @@ const ProductForm = ({ product }) => {
     if (!isEditProduct) form.resetFields();
   }, [selectedProduct, isEditProduct]);
 
+  // Helpers -> Start
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
   };
 
+  const processTamilInput = e => {
+    const englishValue = e.target.value
+    const tamilWord = tamilUnicodeUtf8Replace(englishValue)
+    form.setFieldsValue({
+      tamilName: tamilWord
+    })
+  }
+
   const processForm = (fields) => {
     form
       .validateFields()
       .then((values) => {
-        console.log(values);
-        dispatch(addProduct(product));
+        const { tamilInput, ...newProduct } = values
+        addNewProduct(newProduct)
       })
       .catch((reason) => {
         console.log(reason);
@@ -69,7 +80,7 @@ const ProductForm = ({ product }) => {
     >
       <Form.Item
         label="English Name"
-        name="englishName"
+        name="tanglishName"
         rules={[
           {
             min: 3,
@@ -84,6 +95,21 @@ const ProductForm = ({ product }) => {
       </Form.Item>
       <Form.Item
         label="Tamil Name"
+        name="tamilInput"
+        rules={[
+          {
+            min: 5,
+            message: "length should be between 5 to 50",
+          },
+          { whitespace: true, message: "Name should not be spaces" },
+          { required: true, message: "Please input Tamil Name!" },
+        ]}
+        onChange={processTamilInput}
+      >
+        <Input placeholder="Product Tamil Name" />
+      </Form.Item>
+      <Form.Item
+        label="Converted Name"
         name="tamilName"
         rules={[
           {
@@ -94,31 +120,28 @@ const ProductForm = ({ product }) => {
           { required: true, message: "Please input Tamil Name!" },
         ]}
       >
-        <Input placeholder="Product Tamil Name" />
+        <Input placeholder="Product Tamil Name" disabled />
       </Form.Item>
       <Form.Item
-        name="unit"
+        name="metric"
         label="Select Unit"
         rules={[{ required: true, message: "Please select unit type" }]}
       >
         <Select placeholder="Select an Unit" allowClear>
           {metrics
             ? metrics.map((metric) => (
-                <Option value={metric.unitName}>{metric.unitName}</Option>
-              ))
+              <Option key={metric._links.self.href} value={metric._links.self.href}>{metric.unitName}</Option>
+            ))
             : null}
-          <Option value="kgs">Kgs</Option>
-          <Option value="nos">Nos</Option>
         </Select>
       </Form.Item>
       <Form.Item
         label="Price"
-        name="price"
+        name="marketPrice"
         rules={[
           {
             min: 1.0,
             max: 1000000.0,
-            message: "Price should be greater than ₹ 1",
             validator: inputNumberValidator,
           },
           { required: true, message: "Please input price!" },
@@ -133,7 +156,6 @@ const ProductForm = ({ product }) => {
           {
             min: 1.0,
             max: 1000000.0,
-            message: "Price should be greater than ₹ 1",
             validator: inputNumberValidator,
           },
           { required: true, message: "Please input Retial price!" },
@@ -143,12 +165,11 @@ const ProductForm = ({ product }) => {
       </Form.Item>
       <Form.Item
         label="Wholesale Price"
-        name="wholeSalePrice"
+        name="wholesalePrice"
         rules={[
           {
             min: 1.0,
             max: 1000000.0,
-            message: "Price should be greater than ₹ 1",
             validator: inputNumberValidator,
           },
           { required: true, message: "Please input Wholsesale price!" },
@@ -172,19 +193,10 @@ const ProductForm = ({ product }) => {
       </Form.Item>
     </Form>
   );
+  // Helper -> Ends
 
-  return !isEditProduct ? (
-    formComponent
-  ) : (
-    <>
-      <h2> {isEditProduct ? `${selectedProduct.tamilName} Details` : null}</h2>
-      {loading ? (
-        <Spin tip=" Deleting...">{formComponent}</Spin>
-      ) : (
-        formComponent
-      )}
-    </>
-  );
+  return formComponent
+
 };
 
 ProductForm.propTypes = {};
