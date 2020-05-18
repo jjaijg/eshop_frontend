@@ -91,7 +91,7 @@ export const getColumns = (
     dataIndex: "id",
     key: "id",
     width: "80px",
-    sorter: (a, b) => a.id - b.id,
+    sorter: (a, b) => parseInt(a.id) - parseInt(b.id),
   },
 
   {

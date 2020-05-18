@@ -123,20 +123,20 @@ const ProductForm = ({ name, addNewProduct, editProduct }) => {
       <Form.Item
         label="Tamil Name"
         name="tamilInput"
-        rules={[
-          {
-            min: 5,
-            message: "length should be between 5 to 50",
-          },
-          {
-            whitespace: true,
-            message: "Name should not be spaces",
-          },
-          {
-            required: true,
-            message: "Please input Tamil Name!",
-          },
-        ]}
+        // rules={[
+        //   {
+        //     min: 5,
+        //     message: "length should be between 5 to 50",
+        //   },
+        //   {
+        //     whitespace: true,
+        //     message: "Name should not be spaces",
+        //   },
+        //   {
+        //     required: true,
+        //     message: "Please input Tamil Name!",
+        //   },
+        // ]}
         onChange={processTamilInput}
       >
         <Input placeholder="Product Tamil Name" />
