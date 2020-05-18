@@ -17,7 +17,7 @@ const ProductDashboard = (props) => {
   }, [getAllProducts]);
 
   return (
-    <Tabs defaultActiveKey="2" type="card">
+    <Tabs defaultActiveKey="1" type="card">
       <TabPane tab="Product List" key="1">
         <ProductList />
       </TabPane>

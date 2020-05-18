@@ -11,6 +11,7 @@ import {
   isAddProductAction,
   selectedProductAction,
   createProductAction,
+  editProductAction,
 } from "../reducers/productRecuder";
 
 // get all products
@@ -73,6 +74,19 @@ export const addProduct = (product) => async (dispatch) => {
 };
 
 // Edit a product
+export const editProduct = ({ id, ...product }) => (dispatch) => {
+  axios
+    .put(`/products/${id}`, product)
+    .then(() => {
+      axios
+        .get(`/products/${id}?projection=productList`)
+        .then((res) => {
+          dispatch(editProductAction(res.data));
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
+};
 
 // Delete a product
 export const deleteProduct = (id) => (dispatch) => {

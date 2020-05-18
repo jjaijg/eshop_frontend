@@ -57,20 +57,22 @@ const Dashboard = (props) => {
               padding: "0px",
             }}
           >
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
-              {React.createElement(
-                collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-                {
-                  className: "trigger",
-                  onClick: toggle,
-                  style: {
-                    color: "white",
-                    fontSize: "25px",
-                    paddingRight: "15px",
-                  },
-                }
-              )}
-              <Menu.Item key="1">Dashboard</Menu.Item>
+            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={"2"}>
+              <Menu.Item key="1">
+                {React.createElement(
+                  collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+                  {
+                    className: "trigger",
+                    onClick: toggle,
+                    style: {
+                      color: "white",
+                      fontSize: "1.2rem",
+                      paddingRight: "15px",
+                    },
+                  }
+                )}
+              </Menu.Item>
+              <Menu.Item key="2">Dashboard</Menu.Item>
             </Menu>
           </Header>
           <Content

@@ -22,7 +22,9 @@ const ProductAdd = () => {
   const addNewProduct = (newProduct) => {
     dispatch(addProduct(newProduct));
   };
-  const addproductForm = <ProductForm addNewProduct={addNewProduct} />;
+  const addproductForm = (
+    <ProductForm name="Add" addNewProduct={addNewProduct} />
+  );
   // Helpers -> end
 
   return (

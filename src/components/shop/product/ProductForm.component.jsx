@@ -2,24 +2,26 @@
 // React
 import React, { useEffect } from "react";
 // import PropTypes from "prop-types";
+// axios
+import axios from "../../../app/axios";
 // Antd
 import { Form, Input, Button, Select } from "antd";
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import { inputNumberValidator } from "../validator/productValidator";
-
-import { getAllMetrics } from "../../../app/dispatchers/metricDispatcher";
+import {
+  getAllMetrics,
+  getMetric,
+} from "../../../app/dispatchers/metricDispatcher";
 // helper
 import tamilUnicodeUtf8Replace from "../helper/font";
 
-const ProductForm = ({ addNewProduct }) => {
+const ProductForm = ({ name, addNewProduct, editProduct }) => {
   // Variables
   // Form Ref
   const [form] = Form.useForm();
   // global states
-  const { selectedProduct, isEditProduct } = useSelector(
-    (state) => state.product
-  );
+  const { selectedProduct } = useSelector((state) => state.product);
   const { metrics } = useSelector((state) => state.metric);
   // Redux
   const dispatch = useDispatch();
@@ -32,11 +34,21 @@ const ProductForm = ({ addNewProduct }) => {
   }, []);
   // intializer to set or reset form fields
   useEffect(() => {
-    form.setFieldsValue({
-      ...selectedProduct,
-    });
-    if (!isEditProduct) form.resetFields();
-  }, [selectedProduct, isEditProduct]);
+    if (Object.entries(selectedProduct).length) {
+      const resp = getMetric(selectedProduct);
+      resp.then((data) => {
+        console.log(`Resp : ${data}`);
+        // set initial value in form
+        form.setFieldsValue({
+          ...selectedProduct,
+          metric: data._links.self.href,
+        });
+      });
+    } else {
+      form.resetFields();
+    }
+    // if (!isEditProduct) form.resetFields();
+  }, [selectedProduct]);
 
   // Helpers -> Start
   const layout = {
@@ -64,8 +76,13 @@ const ProductForm = ({ addNewProduct }) => {
     form
       .validateFields()
       .then((values) => {
-        const { tamilInput, ...newProduct } = values;
-        addNewProduct(newProduct);
+        const { tamilInput, ...product } = values;
+        if (Object.entries(selectedProduct).length) {
+          console.log("in edit product");
+          editProduct({ id: selectedProduct.id, ...product });
+        } else {
+          addNewProduct(product);
+        }
       })
       .catch((reason) => {
         console.log(reason);
@@ -80,6 +97,7 @@ const ProductForm = ({ addNewProduct }) => {
       onFinishFailed={(errInfo) => {
         console.log(errInfo);
       }}
+      name={name}
     >
       <Form.Item
         label="English Name"
@@ -229,7 +247,7 @@ const ProductForm = ({ addNewProduct }) => {
           Reset Form
         </Button>
         <Button htmlType="submit" type="primary">
-          Add Product
+          {name} Product
         </Button>
       </Form.Item>
     </Form>
