@@ -9,6 +9,7 @@ import {
   VideoCameraOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
+import { Switch, Route } from "react-router-dom";
 
 import ProductDashboard from "../shop/product/ProductDashboard";
 
@@ -83,7 +84,10 @@ const Dashboard = (props) => {
               minHeight: 280,
             }}
           >
-            <ProductDashboard />
+            <Switch>
+              <Route exact path="/" component={ProductDashboard} />
+              <Route path="/new" component={() => <div>NEw component</div>} />
+            </Switch>
           </Content>
         </Layout>
       </Layout>
