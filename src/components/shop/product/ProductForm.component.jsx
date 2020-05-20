@@ -2,8 +2,6 @@
 // React
 import React, { useEffect } from "react";
 // import PropTypes from "prop-types";
-// axios
-import axios from "../../../app/axios";
 // Antd
 import { Form, Input, Button, Select } from "antd";
 // Redux
@@ -13,6 +11,8 @@ import {
   getAllMetrics,
   getMetric,
 } from "../../../app/dispatchers/metricDispatcher";
+// Custom components
+import ProductDelete from "./ProductDelete.component";
 // helper
 import tamilUnicodeUtf8Replace from "../helper/font";
 
@@ -123,20 +123,6 @@ const ProductForm = ({ name, addNewProduct, editProduct }) => {
       <Form.Item
         label="Tamil Name"
         name="tamilInput"
-        // rules={[
-        //   {
-        //     min: 5,
-        //     message: "length should be between 5 to 50",
-        //   },
-        //   {
-        //     whitespace: true,
-        //     message: "Name should not be spaces",
-        //   },
-        //   {
-        //     required: true,
-        //     message: "Please input Tamil Name!",
-        //   },
-        // ]}
         onChange={processTamilInput}
       >
         <Input placeholder="Product Tamil Name" />
@@ -236,7 +222,7 @@ const ProductForm = ({ name, addNewProduct, editProduct }) => {
         <Input placeholder="Procudt Wholesale Price" prefix="₹" suffix="INR" />
       </Form.Item>
       <Form.Item {...tailLayout}>
-        <Button
+        {/* <Button
           htmlType="reset"
           type="danger"
           onClick={() => form.resetFields()}
@@ -245,7 +231,11 @@ const ProductForm = ({ name, addNewProduct, editProduct }) => {
           }}
         >
           Reset Form
-        </Button>
+        </Button> */}
+        <ProductDelete
+          name={form.getFieldValue("tamilName")}
+          id={selectedProduct.id}
+        />
         <Button htmlType="submit" type="primary">
           {name} Product
         </Button>
