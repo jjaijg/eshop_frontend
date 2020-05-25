@@ -96,12 +96,9 @@ export const getColumns = (
 
   {
     title: "Unit",
-    dataIndex: "unitName",
-    key: "unitName",
+    dataIndex: "metricUnitName",
+    key: "metricUnitName",
     width: "80px",
-    render: (evt, record) => {
-      return record.metric ? record.metric.unitName : null;
-    },
   },
 
   {
