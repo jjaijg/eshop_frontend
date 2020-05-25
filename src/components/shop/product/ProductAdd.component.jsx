@@ -1,59 +1,44 @@
 // Depenencies
-// React 
-import React, { useState } from "react";
-// antd 
-import { Drawer, Button, Spin } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+// React
+import React from "react";
+// antd
+import { Spin, Row, Col } from "antd";
 // custom component dependency
 import ProductForm from "./ProductForm.component";
-// Redux 
-import { useDispatch } from 'react-redux'
-import { isEditProductAction } from "../../../app/reducers/productRecuder";
+// Redux
+import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../../app/dispatchers/productDispatchers";
 
 // Add product Component
 const ProductAdd = () => {
   // Variables
-  // inline state 
-  const [visible, setvisible] = useState(false);
-  const [isadding, setisadding] = useState(false)
+  // global state
+  const { isadding } = useSelector((state) => state.product);
   // Redux
   const dispatch = useDispatch();
 
   // Helpers -> start
-  const showDrawer = () => {
-    isEditProductAction(false);
-    setvisible(true);
+
+  const addNewProduct = (newProduct) => {
+    dispatch(addProduct(newProduct));
   };
-
-  const onClose = () => {
-    setvisible(false);
-  };
-
-  const addNewProduct = newProduct => {
-    setisadding(true)
-    dispatch(addProduct(newProduct))
-    setisadding(false)
-
-  }
-  const addproductForm = <ProductForm addNewProduct={addNewProduct} />
+  const addproductForm = (
+    <ProductForm name="Add" addNewProduct={addNewProduct} />
+  );
   // Helpers -> end
 
   return (
-    <div>
-      <Button type="primary" onClick={showDrawer}>
-        <PlusOutlined /> Add New Product
-      </Button>
-      <Drawer
-        title="Add New Product"
-        width={620}
-        onClose={onClose}
-        visible={visible}
-        bodyStyle={{ paddingBottom: 80 }}
-      >
-        {isadding ? <Spin tip="Adding new product!!!" >{addproductForm}</Spin> : addproductForm}
-      </Drawer>
-    </div>
+    <>
+      <Row type="flex" align="middle">
+        <Col span={16}>
+          {isadding ? (
+            <Spin tip="Adding new product!!!">{addproductForm}</Spin>
+          ) : (
+            addproductForm
+          )}
+        </Col>
+      </Row>
+    </>
   );
 };
 

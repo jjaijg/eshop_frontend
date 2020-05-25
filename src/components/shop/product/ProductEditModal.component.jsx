@@ -1,6 +1,10 @@
 import React from "react";
 import { Modal } from "antd";
 
+// Redux
+import { useDispatch } from "react-redux";
+import { editProduct } from "../../../app/dispatchers/productDispatchers";
+
 import ProductForm from "./ProductForm.component";
 
 const ProductEditModal = ({
@@ -8,8 +12,11 @@ const ProductEditModal = ({
   handleEditModal,
   closeEditModal,
 }) => {
-  const processForm = (fields) => {
-    console.log(`Fields : ${Object.entries(fields)}`);
+  const dispatch = useDispatch();
+  const processForm = (product) => {
+    console.log(`product : ${Object.entries(product)}`);
+    dispatch(editProduct(product));
+    closeEditModal(false);
   };
 
   const handleClose = () => {
@@ -24,7 +31,7 @@ const ProductEditModal = ({
       footer={null}
       onCancel={handleClose}
     >
-      <ProductForm />
+      <ProductForm name="Edit" editProduct={processForm} />
     </Modal>
   );
 };

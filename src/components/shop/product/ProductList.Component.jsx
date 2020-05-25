@@ -4,14 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 // import PropTypes from "prop-types";
 
 // Antd dependencies
-import { Table, Row, Col } from "antd";
+import { Table } from "antd";
 
 // configs
 import { getColumns } from "./productConfig";
 
 // Custom components dependencies
 import ProductEditModal from "./ProductEditModal.component";
-import ProductAdd from "./ProductAdd.component";
 
 // Redux dependencies
 import { getAllProducts } from "../../../app/dispatchers/productDispatchers";
@@ -111,14 +110,6 @@ const ProductList = (props) => {
         handleEditModal={handleEditModal}
         closeEditModal={closeEditModal}
       />
-      <Row>
-        <Col span="12">
-          <h2>Products List</h2>
-        </Col>
-        <Col span="12" style={{ textAlign: "right" }}>
-          <ProductAdd />
-        </Col>
-      </Row>
       <Table
         columns={columns}
         onRow={onRow}

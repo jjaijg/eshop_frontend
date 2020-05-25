@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 
 // import PropTypes from "prop-types";
-import { Layout, Menu, Row, Col } from "antd";
+import { Layout, Menu } from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -10,6 +9,7 @@ import {
   VideoCameraOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
+import { Switch, Route } from "react-router-dom";
 
 import ProductDashboard from "../shop/product/ProductDashboard";
 
@@ -17,7 +17,6 @@ const { Header, Sider, Content } = Layout;
 
 const Dashboard = (props) => {
   const [collapsed, setCollapsed] = useState(true);
-  const dispatch = useDispatch();
 
   const toggle = () => {
     setCollapsed(!collapsed);
@@ -50,25 +49,45 @@ const Dashboard = (props) => {
           </Menu>
         </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
-            {React.createElement(
-              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-              {
-                className: "trigger",
-                onClick: toggle,
-                style: { color: "white" },
-              }
-            )}
+          <Header
+            className="site-layout-background"
+            style={{
+              position: "fixed",
+              zIndex: 1,
+              width: "100%",
+              padding: "0px",
+            }}
+          >
+            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={"2"}>
+              <Menu.Item key="1">
+                {React.createElement(
+                  collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+                  {
+                    className: "trigger",
+                    onClick: toggle,
+                    style: {
+                      color: "white",
+                      fontSize: "1.2rem",
+                      paddingRight: "15px",
+                    },
+                  }
+                )}
+              </Menu.Item>
+              <Menu.Item key="2">Dashboard</Menu.Item>
+            </Menu>
           </Header>
           <Content
             className="site-layout-background"
             style={{
-              margin: "24px 16px",
+              margin: "60px 16px",
               padding: 24,
               minHeight: 280,
             }}
           >
-            <ProductDashboard />
+            <Switch>
+              <Route exact path="/" component={ProductDashboard} />
+              <Route path="/new" component={() => <div>NEw component</div>} />
+            </Switch>
           </Content>
         </Layout>
       </Layout>
