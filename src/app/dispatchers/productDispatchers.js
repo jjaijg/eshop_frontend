@@ -1,4 +1,5 @@
 import axios from "../axios";
+import a from "axios";
 import { message, notification } from "antd";
 
 import {
@@ -50,6 +51,17 @@ export const getAllProducts = (params = {}) => (dispatch) => {
         description: `Error in getting products, Error: ${err.message}`,
       });
     });
+};
+
+// Search product
+let ctoken = null;
+export const searchProducts = async (query) => {
+  if (ctoken) ctoken.cancel();
+  ctoken = a.CancelToken.source();
+  return await axios.get("/products", {
+    tanglishName: query,
+    cancelToken: ctoken.token,
+  });
 };
 
 // create new product

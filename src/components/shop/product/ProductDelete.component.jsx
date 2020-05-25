@@ -1,16 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 // import PropTypes from "prop-types";
-import {
-  Form,
-  Input,
-  InputNumber,
-  Button,
-  Row,
-  Col,
-  Spin,
-  Popconfirm,
-} from "antd";
+import { Button, Popconfirm } from "antd";
 
 import { QuestionCircleOutlined } from "@ant-design/icons";
 

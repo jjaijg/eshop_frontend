@@ -222,20 +222,23 @@ const ProductForm = ({ name, addNewProduct, editProduct }) => {
         <Input placeholder="Procudt Wholesale Price" prefix="₹" suffix="INR" />
       </Form.Item>
       <Form.Item {...tailLayout}>
-        {/* <Button
-          htmlType="reset"
-          type="danger"
-          onClick={() => form.resetFields()}
-          style={{
-            marginRight: "15px",
-          }}
-        >
-          Reset Form
-        </Button> */}
-        <ProductDelete
-          name={form.getFieldValue("tamilName")}
-          id={selectedProduct.id}
-        />
+        {name === "add" ? (
+          <Button
+            htmlType="reset"
+            type="danger"
+            onClick={() => form.resetFields()}
+            style={{
+              marginRight: "15px",
+            }}
+          >
+            Reset Form
+          </Button>
+        ) : (
+          <ProductDelete
+            name={form.getFieldValue("tamilName")}
+            id={selectedProduct.id}
+          />
+        )}
         <Button htmlType="submit" type="primary">
           {name} Product
         </Button>
