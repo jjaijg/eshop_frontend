@@ -68,7 +68,7 @@ const ProductForm = ({ name, addNewProduct, editProduct }) => {
     const englishValue = e.target.value;
     const tamilWord = tamilUnicodeUtf8Replace(englishValue);
     form.setFieldsValue({
-      tamilName: tamilWord,
+      tamilName: tamilWord ? tamilWord : selectedProduct.tamilName,
     });
   };
 
@@ -121,19 +121,19 @@ const ProductForm = ({ name, addNewProduct, editProduct }) => {
         <Input autoFocus placeholder="Product English Name" />
       </Form.Item>
       <Form.Item
-        label="Tamil Name"
+        label="Tanglish Name"
         name="tamilInput"
         onChange={processTamilInput}
       >
         <Input placeholder="Product Tamil Name" />
       </Form.Item>
       <Form.Item
-        label="Converted Name"
+        label="Tamil Name"
         name="tamilName"
         rules={[
           {
-            min: 5,
-            message: "length should be between 5 to 50",
+            min: 2,
+            message: "length should be between 2 to 50",
           },
           {
             whitespace: true,
@@ -222,20 +222,24 @@ const ProductForm = ({ name, addNewProduct, editProduct }) => {
         <Input placeholder="Procudt Wholesale Price" prefix="₹" suffix="INR" />
       </Form.Item>
       <Form.Item {...tailLayout}>
-        {/* <Button
-          htmlType="reset"
-          type="danger"
-          onClick={() => form.resetFields()}
-          style={{
-            marginRight: "15px",
-          }}
-        >
-          Reset Form
-        </Button> */}
-        <ProductDelete
-          name={form.getFieldValue("tamilName")}
-          id={selectedProduct.id}
-        />
+        {name === "add" ? (
+          <Button
+            htmlType="reset"
+            type="danger"
+            onClick={() => form.resetFields()}
+            style={{
+              marginRight: "15px",
+            }}
+          >
+            Reset Form
+          </Button>
+        ) : (
+          <ProductDelete
+            name={selectedProduct.tanglishName}
+            id={selectedProduct.id}
+            style={{ marginRight: "15px" }}
+          />
+        )}
         <Button htmlType="submit" type="primary">
           {name} Product
         </Button>
