@@ -10,6 +10,8 @@ const productsSlice = createSlice({
     pagination: { current: 1, pageSize: 10, showSizeChanger: true },
     isEditProduct: false,
     isadding: false,
+    isDeleting: false,
+    isEditing: false,
     loading: false,
     showEditProductModal: false,
   },
@@ -69,6 +71,18 @@ const productsSlice = createSlice({
         isEditProduct: payload,
       };
     },
+    isDeleteProduct: (state, { payload }) => {
+      return {
+        ...state,
+        isDeleting: payload,
+      };
+    },
+    isEditingProduct: (state, { payload }) => {
+      return {
+        ...state,
+        isEditing: payload,
+      };
+    },
     productsLoading: (state, { payload }) => {
       return {
         ...state,
@@ -97,6 +111,8 @@ export const {
   productPagination: productPaginationAction,
   isEditProduct: isEditProductAction,
   addingProduct: isAddProductAction,
+  isDeleteProduct: isDeleteProductAction,
+  isEditingProduct: isEditingProductAction,
   productsLoading: productsLoadingAction,
   showEditProductModal: showEditProductModalAction,
 } = productsSlice.actions;
