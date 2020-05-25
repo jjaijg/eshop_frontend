@@ -85,10 +85,6 @@ const ProductList = (props) => {
     };
   };
 
-  const handleEditModal = (bool) => {
-    dispatch(showEditProductModalAction(bool));
-    dispatch(isEditProductAction(false));
-  };
   const closeEditModal = (bool) => {
     dispatch(showEditProductModalAction(bool));
     dispatch(selectedProductAction({}));
@@ -107,7 +103,6 @@ const ProductList = (props) => {
     <>
       <ProductEditModal
         editmodalVisible={showEditProductModal}
-        handleEditModal={handleEditModal}
         closeEditModal={closeEditModal}
       />
       <Table

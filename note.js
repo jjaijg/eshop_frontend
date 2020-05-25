@@ -23,3 +23,31 @@
     a. make that field as not required and mark the field receving tamil name as required - best
     b. add a field in product db to store the english value also. (not recommended)
 */
+
+// Product modal
+// {
+//       "id" : 43,
+//       "tanglishName" : "arasan soap",
+//       "tamilName" : "அரசன் ",
+//       "metricValue" : 1,
+//       "metricUnitName" : "Kgs",
+//       "marketPrice" : 90.0,
+//       "retailPrice" : 89.0,
+//       "wholesalePrice" : 89.0,
+//       "_links" : {
+//         "self" : {
+//           "href" : "http://localhost:8080/restapi/products/43"
+//         },
+//         "product" : {
+//           "href" : "http://localhost:8080/restapi/products/43{?projection}",
+//           "templated" : true
+//         },
+//         "metric" : {
+//           "href" : "http://localhost:8080/restapi/products/43/metric"
+//         },
+//         "billProduct" : {
+//           "href" : "http://localhost:8080/restapi/products/43/billProduct{?projection}",
+//           "templated" : true
+//         }
+//       }
+//     }

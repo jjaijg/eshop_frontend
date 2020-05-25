@@ -7,7 +7,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 
 import { deleteProduct } from "../../../app/dispatchers/productDispatchers";
 
-const DeleteProduct = ({ name, id }) => {
+const DeleteProduct = ({ name, id, style = {} }) => {
   const dispatch = useDispatch();
   return (
     <Popconfirm
@@ -20,7 +20,7 @@ const DeleteProduct = ({ name, id }) => {
       okType="danger"
       cancelText="No"
     >
-      <Button type="danger" htmlType="button">
+      <Button type="danger" htmlType="button" style={style}>
         Delete
       </Button>
     </Popconfirm>

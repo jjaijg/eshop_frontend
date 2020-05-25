@@ -10,6 +10,8 @@ import {
   showEditProductModalAction,
   isEditProductAction,
   isAddProductAction,
+  isDeleteProductAction,
+  isEditingProductAction,
   selectedProductAction,
   createProductAction,
   editProductAction,
@@ -87,6 +89,7 @@ export const addProduct = (product) => async (dispatch) => {
 
 // Edit a product
 export const editProduct = ({ id, ...product }) => (dispatch) => {
+  dispatch(isEditingProductAction(true));
   axios
     .put(`/products/${id}`, product)
     .then(() => {
@@ -94,23 +97,35 @@ export const editProduct = ({ id, ...product }) => (dispatch) => {
         .get(`/products/${id}?projection=productList`)
         .then((res) => {
           dispatch(editProductAction(res.data));
+          dispatch(selectedProductAction(res.data));
+          dispatch(isEditingProductAction(false));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          dispatch(isEditingProductAction(false));
+
+          console.log(err);
+        });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      dispatch(isEditingProductAction(false));
+      console.log(err);
+    });
 };
 
 // Delete a product
 export const deleteProduct = (id) => (dispatch) => {
-  dispatch(productsLoadingAction(true));
+  dispatch(isDeleteProductAction(true));
   axios
     .delete(`/products/${id}`)
     .then((res) => {
       dispatch(deleteProductAction(id));
       dispatch(selectedProductAction({}));
+      dispatch(isDeleteProductAction(false));
       dispatch(showEditProductModalAction(false));
-      dispatch(productsLoadingAction(false));
       dispatch(isEditProductAction(false));
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      dispatch(isDeleteProductAction(false));
+      console.log(err);
+    });
 };
