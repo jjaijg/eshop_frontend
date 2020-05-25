@@ -12,6 +12,7 @@ import {
 import { Switch, Route } from "react-router-dom";
 
 import ProductDashboard from "../shop/product/ProductDashboard";
+import BillDashboard from "../shop/bill/BillDashboard";
 
 const { Header, Sider, Content } = Layout;
 
@@ -86,7 +87,7 @@ const Dashboard = (props) => {
           >
             <Switch>
               <Route exact path="/" component={ProductDashboard} />
-              <Route path="/new" component={() => <div>NEw component</div>} />
+              <Route path="/bill" component={BillDashboard} />
             </Switch>
           </Content>
         </Layout>

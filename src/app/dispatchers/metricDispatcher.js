@@ -13,5 +13,5 @@ export const getMetric = async (product) => {
   // get relative url
   const metric_url = product._links.metric.href.split("/");
   const rel_url = metric_url.splice(4, metric_url.length).join("/");
-  return await axios.get(`/${rel_url}`).then((res) => res.data);
+  return await axios.get(`/${rel_url}`);
 };
