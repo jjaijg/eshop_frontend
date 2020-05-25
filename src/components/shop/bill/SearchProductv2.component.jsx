@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Input, Select } from "antd";
-
-import { useDispatch } from "react-redux";
+import { Select } from "antd";
 
 import { searchProducts } from "../../../app/dispatchers/productDispatchers";
-
-const { Search } = Input;
 const { Option } = Select;
 
 const SearchProductv2 = ({ selectProduct }) => {
-  const [query, setquery] = useState("");
   const [value, setvalue] = useState(null);
   const [products, setproducts] = useState([]);
-  const dispatch = useDispatch();
 
   const handleSearch = (query) => {
     const resp = searchProducts(query);
@@ -47,7 +41,6 @@ const SearchProductv2 = ({ selectProduct }) => {
       notFoundContent={null}
       style={{ width: "200px" }}
     >
-      {/* <Search size="large" placeholder="input here" enterButton /> */}
       {products.map((product, index) => (
         <Option key={index} value={index}>
           {`${product.tanglishName}`}
