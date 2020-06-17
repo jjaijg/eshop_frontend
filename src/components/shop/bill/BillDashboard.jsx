@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Tabs } from "antd";
 
-import { useDispatch } from "react-redux";
-// import PropTypes from "prop-types";
-import Bill from "./Bill.componentList";
-// import ProductAdd from "./ProductAdd.component";
-// import { getAllProducts } from "../../../app/dispatchers/productDispatchers";
+import BillProductTable from "./BillProductTable";
 
-let newTabIndex = 0;
 const BillDashboard = (props) => {
-  // const dispatch = useDispatch();
-
   const { TabPane } = Tabs;
 
   const panes = [
     {
       title: "Bill List",
       content: "Content of Bill List",
-      key: "1",
+      key: "0",
       closable: false,
     },
   ];
@@ -26,6 +19,7 @@ const BillDashboard = (props) => {
     activeKey: panes[0].key,
     panes,
   });
+  const [nextTabIndex, setNextTabIndex] = useState(1);
 
   const onEdit = (targetKey, action) => {
     if (action === "add") add();
@@ -34,23 +28,26 @@ const BillDashboard = (props) => {
 
   const add = () => {
     const { panes } = tab;
-    const activeKey = `newBill${newTabIndex++}`;
+    const activeKey = nextTabIndex.toString(10);
     panes.push({
-      title: `Bill ${newTabIndex}`,
-      content: <Bill />,
+      title: `Bill ${nextTabIndex}`,
+      content: <BillProductTable name={`Bill_${nextTabIndex}`} />,
       key: activeKey,
     });
     settab({ panes, activeKey });
+    setNextTabIndex(nextTabIndex + 1);
   };
 
-  const remove = (targetKey) => {
+  const remove = (key) => {
     let { activeKey } = tab;
+    const targetKey = key;
     let lastIndex;
     tab.panes.forEach((pane, i) => {
       if (pane.key === targetKey) {
         lastIndex = i - 1;
       }
     });
+    console.log(targetKey, lastIndex, activeKey);
     const panes = tab.panes.filter((pane) => pane.key !== targetKey);
     if (panes.length && activeKey === targetKey) {
       if (lastIndex >= 0) {
@@ -82,7 +79,5 @@ const BillDashboard = (props) => {
     </Tabs>
   );
 };
-
-BillDashboard.propTypes = {};
 
 export default BillDashboard;
