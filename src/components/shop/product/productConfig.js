@@ -84,8 +84,15 @@ export const getColumns = (
   handleSearch,
   handleReset,
   searchedColumn,
-  searchText
+  searchText,
+  currentPage
 ) => [
+  {
+    title: "Sno",
+    key: "index",
+    render: (value, item, index) => (currentPage - 1) * 10 + index + 1,
+    width: "80px",
+  },
   {
     title: "Id",
     dataIndex: "id",
