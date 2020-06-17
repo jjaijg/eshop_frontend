@@ -16,7 +16,12 @@ import ProductDelete from "./ProductDelete.component";
 // helper
 import tamilUnicodeUtf8Replace from "../helper/font";
 
-const ProductForm = ({ name, addNewProduct, editProduct }) => {
+const ProductForm = ({
+  name,
+  addNewProduct,
+  editProduct,
+  handleDeleteProduct,
+}) => {
   // Variables
   // Form Ref
   const [form] = Form.useForm();
@@ -36,8 +41,7 @@ const ProductForm = ({ name, addNewProduct, editProduct }) => {
   useEffect(() => {
     if (Object.entries(selectedProduct).length) {
       const resp = getMetric(selectedProduct);
-      resp.then((data) => {
-        console.log(`Resp : ${data}`);
+      resp.then(({ data }) => {
         // set initial value in form
         form.setFieldsValue({
           ...selectedProduct,
@@ -238,6 +242,7 @@ const ProductForm = ({ name, addNewProduct, editProduct }) => {
             name={selectedProduct.tanglishName}
             id={selectedProduct.id}
             style={{ marginRight: "15px" }}
+            handleDelete={handleDeleteProduct}
           />
         )}
         <Button htmlType="submit" type="primary">
