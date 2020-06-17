@@ -6,28 +6,28 @@ import {
   productsLoadingAction,
   productPaginationAction,
   getProductsAction,
-  deleteProductAction,
   showEditProductModalAction,
   isEditProductAction,
   isAddProductAction,
   isDeleteProductAction,
   isEditingProductAction,
   selectedProductAction,
-  createProductAction,
   editProductAction,
 } from "../reducers/productRecuder";
 
 // get all products
-export const getAllProducts = (params = {}) => (dispatch) => {
+export const getAllProducts = (params) => (dispatch) => {
   const { current, pageSize } = params.pagination;
-  const { sortField, sortOrder } = params;
+  let { sortField, sortOrder } = params;
+  if (sortOrder === "descend") sortField += ",desc";
   dispatch(productsLoadingAction(true));
   axios
-    .get(`products`, {
+    .get(`/products`, {
       params: {
         projection: "productList",
         page: current - 1,
         size: pageSize,
+        sort: sortOrder ? sortField : "id",
       },
     })
     .then((res) => {
@@ -37,8 +37,14 @@ export const getAllProducts = (params = {}) => (dispatch) => {
       // set pagination
       dispatch(
         productPaginationAction({
-          total: totalElements,
-          ...params.pagination,
+          pagination: {
+            total: totalElements,
+            ...params.pagination,
+          },
+          urlParms: {
+            sortField: params.sortField,
+            sortOrder: params.sortOrder,
+          },
         })
       );
       // set products
@@ -58,23 +64,29 @@ export const getAllProducts = (params = {}) => (dispatch) => {
 // Search product
 let ctoken = null;
 export const searchProducts = async (query) => {
+  console.log(`query : ${query}`);
   if (ctoken) ctoken.cancel();
   ctoken = a.CancelToken.source();
-  return await axios.get("/products", {
-    tanglishName: query,
-    cancelToken: ctoken.token,
-  });
+  return await axios.get(
+    "/products/search/findByTanglishNameContainingIgnoreCase/",
+    {
+      params: {
+        tanglishName: query,
+        cancelToken: ctoken.token,
+      },
+    }
+  );
 };
 
 // create new product
-export const addProduct = (product) => async (dispatch) => {
+export const addProduct = (product, params) => async (dispatch) => {
   dispatch(isAddProductAction(true));
   await axios
-    .post(`products`, product)
+    .post(`/products`, product)
     .then((res) => {
-      dispatch(createProductAction(res.data));
+      // dispatch(createProductAction(res.data));
       dispatch(isAddProductAction(false));
-
+      dispatch(getAllProducts(params));
       message.success(`${product.tamilName} added to list successfully!`);
     })
     .catch((err) => {
@@ -91,13 +103,14 @@ export const addProduct = (product) => async (dispatch) => {
 export const editProduct = ({ id, ...product }) => (dispatch) => {
   dispatch(isEditingProductAction(true));
   axios
-    .put(`/products/${id}`, product)
-    .then(() => {
+    .patch(`/products/${id}`, product)
+    .then((p) => {
+      console.log(`p : ${p}`);
       axios
-        .get(`/products/${id}?projection=productList`)
+        .get(`products/${id}?projection=productList`)
         .then((res) => {
-          dispatch(editProductAction(res.data));
           dispatch(selectedProductAction(res.data));
+          dispatch(editProductAction(res.data));
           dispatch(isEditingProductAction(false));
         })
         .catch((err) => {
@@ -113,13 +126,15 @@ export const editProduct = ({ id, ...product }) => (dispatch) => {
 };
 
 // Delete a product
-export const deleteProduct = (id) => (dispatch) => {
+export const deleteProduct = (id, params) => (dispatch) => {
   dispatch(isDeleteProductAction(true));
   axios
     .delete(`/products/${id}`)
     .then((res) => {
-      dispatch(deleteProductAction(id));
+      console.log(`id: ${id}`);
+      // dispatch(deleteProductAction(id));
       dispatch(selectedProductAction({}));
+      dispatch(getAllProducts(params));
       dispatch(isDeleteProductAction(false));
       dispatch(showEditProductModalAction(false));
       dispatch(isEditProductAction(false));
@@ -127,5 +142,9 @@ export const deleteProduct = (id) => (dispatch) => {
     .catch((err) => {
       dispatch(isDeleteProductAction(false));
       console.log(err);
+      notification.error({
+        message: "Error",
+        description: `Error in deleting product, Error: ${err.message}`,
+      });
     });
 };
