@@ -8,6 +8,10 @@ const productsSlice = createSlice({
     recentProducts: [],
     selectedProduct: {},
     pagination: { current: 1, pageSize: 10, showSizeChanger: true },
+    urlParms: {
+      sortField: "id",
+      sortOrder: undefined,
+    },
     isEditProduct: false,
     isadding: false,
     isDeleting: false,
@@ -62,8 +66,9 @@ const productsSlice = createSlice({
       };
     },
     productPagination: (state, { payload }) => {
-      const { pagination } = state;
-      Object.assign(pagination, payload);
+      const { pagination, urlParms } = state;
+      Object.assign(pagination, payload.pagination);
+      Object.assign(urlParms, payload.urlParms);
     },
     isEditProduct: (state, { payload }) => {
       return {
