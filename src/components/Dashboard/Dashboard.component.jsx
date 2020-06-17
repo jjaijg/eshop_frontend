@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 
-// import PropTypes from "prop-types";
 import { Layout, Menu } from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  UserOutlined,
   VideoCameraOutlined,
   UploadOutlined,
+  ShopOutlined,
+  ProfileOutlined,
+  HddOutlined,
 } from "@ant-design/icons";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, NavLink, useLocation } from "react-router-dom";
 
 import ProductDashboard from "../shop/product/ProductDashboard";
 import BillDashboard from "../shop/bill/BillDashboard";
@@ -18,6 +19,8 @@ const { Header, Sider, Content } = Layout;
 
 const Dashboard = (props) => {
   const [collapsed, setCollapsed] = useState(true);
+  const location = useLocation();
+  console.log(location);
 
   const toggle = () => {
     setCollapsed(!collapsed);
@@ -32,16 +35,22 @@ const Dashboard = (props) => {
           </div>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["2"]}>
             <Menu.Item key="1">
-              <UserOutlined />
-              <span>Logo</span>
+              <NavLink exact to="/">
+                <ShopOutlined />
+                <span>Logo</span>
+              </NavLink>
             </Menu.Item>
             <Menu.Item key="2">
-              <UserOutlined />
-              <span>Nav 1</span>
+              <NavLink exact to="/">
+                <HddOutlined />
+                <span>Products</span>
+              </NavLink>
             </Menu.Item>
             <Menu.Item key="3">
-              <VideoCameraOutlined />
-              <span>Nav 2</span>
+              <NavLink exact to="/bill">
+                <ProfileOutlined />
+                <span>Bills</span>
+              </NavLink>
             </Menu.Item>
             <Menu.Item key="4">
               <UploadOutlined />
@@ -95,7 +104,5 @@ const Dashboard = (props) => {
     </div>
   );
 };
-
-Dashboard.propTypes = {};
 
 export default Dashboard;
