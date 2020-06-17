@@ -3,18 +3,30 @@ import { Modal, Spin } from "antd";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import { editProduct } from "../../../app/dispatchers/productDispatchers";
+import {
+  editProduct,
+  deleteProduct,
+} from "../../../app/dispatchers/productDispatchers";
 
 import ProductForm from "./ProductForm.component";
 
 const ProductEditModal = ({ editmodalVisible, closeEditModal }) => {
   // variables
   // global state
-  const { isDeleting, isEditing } = useSelector((state) => state.product);
+  const { isDeleting, isEditing, pagination, urlParms } = useSelector(
+    (state) => state.product
+  );
+  // Redux variable
   const dispatch = useDispatch();
-  const processForm = (product) => {
+
+  // Helper -> STARTS
+  const processProductEdit = (product) => {
     // console.log(`product : ${Object.entries(product)}`);
     dispatch(editProduct(product));
+  };
+
+  const processProductDelete = (id) => {
+    dispatch(deleteProduct(id, { pagination, ...urlParms }));
   };
 
   const handleClose = () => {
@@ -22,8 +34,24 @@ const ProductEditModal = ({ editmodalVisible, closeEditModal }) => {
   };
 
   const spinTip = isEditing ? "Editing..." : "Deleting...";
+  const formProps = {
+    name: "edit",
+    editProduct: processProductEdit,
+    handleDeleteProduct: processProductDelete,
+  };
 
-  const editModal = (
+  const editModalForm =
+    isDeleting || isEditing ? (
+      <Spin tip={spinTip}>
+        <ProductForm name="edit" {...formProps} />
+      </Spin>
+    ) : (
+      <ProductForm name="edit" {...formProps} />
+    );
+
+  // Helper -> ENDS
+
+  return (
     <Modal
       title={`Product Detail`}
       centered
@@ -31,17 +59,9 @@ const ProductEditModal = ({ editmodalVisible, closeEditModal }) => {
       footer={null}
       onCancel={handleClose}
     >
-      {isDeleting || isEditing ? (
-        <Spin tip={spinTip}>
-          <ProductForm name="edit" editProduct={processForm} />
-        </Spin>
-      ) : (
-        <ProductForm name="edit" editProduct={processForm} />
-      )}
+      {editModalForm}
     </Modal>
   );
-
-  return editModal;
 };
 
 export default ProductEditModal;
