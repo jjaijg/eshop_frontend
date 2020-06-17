@@ -13,14 +13,16 @@ import { addProduct } from "../../../app/dispatchers/productDispatchers";
 const ProductAdd = () => {
   // Variables
   // global state
-  const { isadding } = useSelector((state) => state.product);
+  const { isadding, pagination, urlParms } = useSelector(
+    (state) => state.product
+  );
   // Redux
   const dispatch = useDispatch();
 
   // Helpers -> start
 
   const addNewProduct = (newProduct) => {
-    dispatch(addProduct(newProduct));
+    dispatch(addProduct(newProduct, { pagination, ...urlParms }));
   };
   const addproductForm = (
     <ProductForm name="add" addNewProduct={addNewProduct} />
