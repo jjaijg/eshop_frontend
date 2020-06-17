@@ -95,7 +95,8 @@ const ProductList = (props) => {
     handleSearch,
     handleReset,
     searchedColumn,
-    searchText
+    searchText,
+    pagination.current
   );
   // helpers end
 
